@@ -38,7 +38,7 @@ public class UserService {
         if (user == null) {
             throw new NotFoundException("用户不存在: " + id);
         }
-        return user;
+        return user
     }
 
     public User create(UserRequest request) {
