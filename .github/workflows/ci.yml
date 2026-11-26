@@ -5,8 +5,6 @@ on:
   push:
     branches: [develop]
   pull_request:
-    branches: [developxxx]
-
 jobs:
   # ---------- 前端 ----------
   frontend:
