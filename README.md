@@ -102,6 +102,9 @@ cd frontend && npm test && npm run typecheck
 
 ## 6. 用它练习 CI/CD（建议步骤）
 
+> 📘 **系统练习请看 [EXERCISES.md](EXERCISES.md)**：13 个动手练习（前后端各覆盖），
+> 由浅入深，带预期现象和知识点，做完一项勾一项。
+
 `.github/workflows/ci.yml` 已经写好：前端 job 跑 `npm ci → typecheck → test → build`，
 后端 job 跑 `mvn test → mvn package`，并上传构建产物（artifact）。
 

@@ -12,7 +12,6 @@ import { formatDateTime } from "./utils/format";
 import "./App.css";
 
 type Status = "loading" | "ready" | "error";
-
 export default function App() {
   const [hello, setHello] = useState<HelloInfo | null>(null);
   const [users, setUsers] = useState<User[]>([]);
