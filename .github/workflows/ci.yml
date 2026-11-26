@@ -3,8 +3,9 @@ name: CI
 
 on:
   push:
-    branches: [developywj]
+    branches: [develop]
   pull_request:
+    branches: [developxxx]
 
 jobs:
   # ---------- 前端 ----------
