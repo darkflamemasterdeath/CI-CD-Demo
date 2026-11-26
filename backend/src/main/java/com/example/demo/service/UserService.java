@@ -30,7 +30,7 @@ public class UserService {
     public List<User> list() {
         return store.values().stream()
                 .sorted(Comparator.comparing(User::id))
-                .toList();
+                .toList()
     }
 
     public User get(Long id) {
