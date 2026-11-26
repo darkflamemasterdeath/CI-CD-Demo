@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
-import type { FormEvent } from 'react'
+import { useCallback, useEffect, useState } from "react";
+import type { FormEvent } from "react";
 import {
   createUser,
   deleteUser,
@@ -7,75 +7,81 @@ import {
   fetchUsers,
   type HelloInfo,
   type User,
-} from './api/users'
-import { formatDateTime } from './utils/format'
-import './App.css'
+} from "./api/users";
+import { formatDateTime } from "./utils/format";
+import "./App.css";
 
-type Status = 'loading' | 'ready' | 'error'
+type Status = "loading" | "ready" | "error";
 
 export default function App() {
-  const [hello, setHello] = useState<HelloInfo | null>(null)
-  const [users, setUsers] = useState<User[]>([])
-  const [status, setStatus] = useState<Status>('loading')
-  const [error, setError] = useState<string | null>(null)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [role, setRole] = useState('开发者')
-  const [submitting, setSubmitting] = useState(false)
+  const [hello, setHello] = useState<HelloInfo | null>(null);
+  const [users, setUsers] = useState<User[]>([]);
+  const [status, setStatus] = useState<Status>("loading");
+  const [error, setError] = useState<string | null>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("开发者");
+  const [submitting, setSubmitting] = useState(false);
 
   const load = useCallback(async () => {
-    setStatus('loading')
-    setError(null)
+    setStatus("loading");
+    setError(null);
     try {
-      const [helloData, userList] = await Promise.all([fetchHello(), fetchUsers()])
-      setHello(helloData)
-      setUsers(userList)
-      setStatus('ready')
+      const [helloData, userList] = await Promise.all([
+        fetchHello(),
+        fetchUsers(),
+      ]);
+      setHello(helloData);
+      setUsers(userList);
+      setStatus("ready");
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
-      setStatus('error')
+      setError(e instanceof Error ? e.message : String(e));
+      setStatus("error");
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    void load()
-  }, [load])
+    void load();
+  }, [load]);
 
   async function handleCreate(event: FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
     if (!name.trim()) {
-      setError('名字不能为空')
-      return
+      setError("名字不能为空");
+      return;
     }
-    setSubmitting(true)
-    setError(null)
+    setSubmitting(true);
+    setError(null);
     try {
-      await createUser({ name: name.trim(), email: email.trim(), role })
-      setName('')
-      setEmail('')
-      await load()
+      await createUser({ name: name.trim(), email: email.trim(), role });
+      setName("");
+      setEmail("");
+      await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
+      setError(e instanceof Error ? e.message : String(e));
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
   }
 
   async function handleDelete(id: number) {
-    setError(null)
+    setError(null);
     try {
-      await deleteUser(id)
-      await load()
+      await deleteUser(id);
+      await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
+      setError(e instanceof Error ? e.message : String(e));
     }
   }
 
   return (
     <div className="page">
       <header className="header">
-        <h1>CI/CD 学习 Demo</h1>
-        <p>React + TypeScript + Vite 前端 · Spring Boot 后端（内存假数据，无数据库）</p>
+        <h1>CI/CD 学习 Demo develop</h1>
+        <p>
+          React + TypeScript + Vite 前端 · Spring Boot
+          后端（内存假数据，无数据库）
+        </p>
       </header>
 
       {hello && (
@@ -107,22 +113,22 @@ export default function App() {
             <option>访客</option>
           </select>
           <button type="submit" disabled={submitting}>
-            {submitting ? '提交中…' : '添加'}
+            {submitting ? "提交中…" : "添加"}
           </button>
         </form>
       </section>
 
       <section className="card">
         <h2>用户列表</h2>
-        {status === 'loading' && <p>加载中…</p>}
-        {status === 'error' && (
+        {status === "loading" && <p>加载中…</p>}
+        {status === "error" && (
           <div className="error">
             <p>无法连接后端：{error}</p>
             <p>请确认已启动后端（cd backend &amp;&amp; mvn spring-boot:run）</p>
             <button onClick={() => void load()}>重试</button>
           </div>
         )}
-        {status === 'ready' && (
+        {status === "ready" && (
           <table>
             <thead>
               <tr>
@@ -141,7 +147,10 @@ export default function App() {
                   <td>{user.email}</td>
                   <td>{user.role}</td>
                   <td>
-                    <button className="link" onClick={() => void handleDelete(user.id)}>
+                    <button
+                      className="link"
+                      onClick={() => void handleDelete(user.id)}
+                    >
                       删除
                     </button>
                   </td>
@@ -157,7 +166,7 @@ export default function App() {
         )}
       </section>
 
-      {error && status !== 'error' && <p className="error-text">{error}</p>}
+      {error && status !== "error" && <p className="error-text">{error}</p>}
     </div>
-  )
+  );
 }
