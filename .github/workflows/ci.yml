@@ -4,7 +4,8 @@ name: CI
 on:
   push:
     branches: [develop]
-  pull_request: [developxxx]
+  pull_request:
+    branches: [developxxx]
 
 jobs:
   # ---------- 前端 ----------
