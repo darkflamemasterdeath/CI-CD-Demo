@@ -16,7 +16,7 @@ class UserServiceTest {
     @Test
     void seedDataExists() {
         List<User> users = userService.list();
-        assertThat(users).hasSizeGreaterThanOrEqualTo(3);
+        assertThat(users).hasSizeGreaterThanOrEqualTo(30);
     }
 
     @Test
