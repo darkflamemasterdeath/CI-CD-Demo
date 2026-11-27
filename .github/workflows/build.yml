@@ -4,7 +4,8 @@ name: YWJ
 on:
   workflow_dispatch:
   push:
-    branches: [develop]
+    # branches: [develop]
+    tags: ["v*"]
   pull_request:
 jobs:
   # ---------- 前端 ----------
