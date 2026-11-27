@@ -1,54 +1,54 @@
 export interface User {
-  id: number
-  name: string
-  email: string
-  role: string
+  id: number;
+  name: string;
+  email: string;
+  role: string;
 }
 
 export interface UserInput {
-  name: string
-  email: string
-  role: string
+  name: string;
+  email: string;
+  role: string;
 }
 
 export interface HelloInfo {
-  message: string
-  time: string
-  userCount: number
+  message: string;
+  time: string;
+  userCount: number;
 }
 
-const BASE_URL = '/api'
+const BASE_URL = `${import.meta.env.VITE_API_BASE ?? ""}/api`;
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE_URL}${url}`, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
     ...options,
-  })
+  });
   if (!res.ok) {
-    const text = await res.text().catch(() => '')
-    throw new Error(`请求失败 ${res.status}: ${text || res.statusText}`)
+    const text = await res.text().catch(() => "");
+    throw new Error(`请求失败 ${res.status}: ${text || res.statusText}`);
   }
   if (res.status === 204) {
-    return undefined as T
+    return undefined as T;
   }
-  return (await res.json()) as T
+  return (await res.json()) as T;
 }
 
 export function fetchHello(): Promise<HelloInfo> {
-  return request<HelloInfo>('/hello')
+  return request<HelloInfo>("/hello");
 }
 
 export function fetchUsers(): Promise<User[]> {
-  return request<User[]>('/users')
+  return request<User[]>("/users");
 }
 
 export function createUser(input: UserInput): Promise<User> {
-  return request<User>('/users', {
-    method: 'POST',
+  return request<User>("/users", {
+    method: "POST",
     body: JSON.stringify(input),
-  })
+  });
 }
 
 export function deleteUser(id: number): Promise<void> {
-  return request<void>(`/users/${id}`, { method: 'DELETE' })
+  return request<void>(`/users/${id}`, { method: "DELETE" });
 }
