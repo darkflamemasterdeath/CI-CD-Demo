@@ -32,6 +32,8 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
       - run: npm run build
+        env:
+          VITE_API_BASE: ${{ vars.VITE_API_BASE }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist # 把 dist/ 作为"部署包"交给下一步
