@@ -34,7 +34,7 @@ public class UserService {
     }
 
     public User get(Long id) {
-        User user = store.get(id)
+        User user = store.get(id);
         if (user == null) {
             throw new NotFoundException("用户不存在: " + id);
         }
