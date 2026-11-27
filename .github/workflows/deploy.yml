@@ -1,15 +1,18 @@
+# CD：推送到 main 就自动把前端构建产物部署到 GitHub Pages
 name: deploy
 
 on:
   push:
-    branchs: [main]
-  workflow_dispatch:
+    branches: [main] # 合并进 main = 自动上线
+  workflow_dispatch: # 也可以在网页上手动部署（X3 学过的按钮）
 
+# GitHub Pages 部署所需的最小权限（安全习惯：只给需要的权限）
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 同一时间只允许一次部署，新部署会取消进行中的旧部署（防止乱序上线）
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -20,27 +23,25 @@ jobs:
     defaults:
       run:
         working-directory: frontend
-      steps:
-        - uses: actions/checkout@v4
-        - uses: actions/setup-node@v4
-          with:
-            node-version: 20
-            cache: npm
-            cache-dependency-path: frontend/package-lock.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist # 把 dist/ 作为"部署包"交给下一步
 
-        - run: npm ci
-        - run: npm run build
-        - uses: actions/upload-pages-artifact@v3
-          with:
-            path: frontend/dist
-
-deploy:
-  needs: build
-
-  runs-on: ubuntu-latest
-  environment:
-    name: githubywj-pages
-    url: ${{steps.deployment.outputs.page_url}}
-  steps:
-    - id: deployment
-      users: actions/deploy-pages@v4
+  deploy:
+    needs: build # X4 学的：构建绿了才部署
+    runs-on: ubuntu-latest
+    environment: # 部署环境：仓库里会多一条 Deployments 记录
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }} # 部署完输出公网地址
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
