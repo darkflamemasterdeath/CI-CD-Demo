@@ -1,10 +1,11 @@
 # CI/CD 学习示例：每次 push / PR 自动检查并打包前后端
-name: YWJ
+name: Build
 
 on:
   workflow_dispatch:
   push:
-    branches: [develop]
+    # branches: [develop]
+    tags: ["v*"]
   pull_request:
 jobs:
   # ---------- 前端 ----------
